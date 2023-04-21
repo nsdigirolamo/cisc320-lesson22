@@ -1,0 +1,7 @@
+5
+15
+Textbook 4 50
+HardDrive 10 2
+DogFood 10 5
+FavoriteGame 20 60
+SuperComputer 100 100
