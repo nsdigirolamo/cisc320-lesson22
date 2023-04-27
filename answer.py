@@ -44,14 +44,12 @@ def select_items (items: list[dict], table: list[int]) -> list[dict]:
 
     row = len(table) - 1
     col = len(table[row]) - 1
-    value = value_table[row][col]
 
-    while value != 0:
-        if value != value_table[row - 1][col] or row == 0:
+    while 0 <= row:
+        if (row == 0 and table[row][col] != 0) or table[row][col] != table[row - 1][col]:
             selected = items[row]
-            selected_items.append(selected)
-            value = value - selected["value"]
-            col = col - selected["value"]
+            selected_items.insert(0, selected)
+            col = col - selected["weight"]
         row = row - 1
 
     return selected_items
@@ -65,8 +63,8 @@ def print_table (items: list[dict], table: list[int]) -> None:
 
 if __name__ == "__main__":
 
-    # filename = input()
-    filename = "input.txt"
+    filename = input()
+    # filename = "input.txt"
     with open(filename) as f: lines = f.readlines()
 
     count = int(lines.pop(0).strip())
@@ -77,10 +75,10 @@ if __name__ == "__main__":
     col_count = max_capacity + 1
     value_table = generate_value_table(items, row_count, col_count)
 
-    print_table(items, value_table)
+    # print_table(items, value_table)
 
     selected_items = select_items(items, value_table)
 
     for item in selected_items:
         print(f"{item['name']}")
-
+    print(f"{value_table[-1][-1]}")
