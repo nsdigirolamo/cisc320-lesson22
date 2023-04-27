@@ -22,15 +22,14 @@ def generate_value_table (items: list[dict], row_count: int, col_count: int) -> 
     for row in range(0, row_count):
         for col in range(0, col_count):
             item = items[row]
-            capacity = col
             if row == 0:
-                if capacity < item["weight"]:
+                if col < item["weight"]:
                     value_table[row][col] = 0
                 else:
                     value_table[row][col] = item["value"]
             else:
                 prev_value = value_table[row - 1][col]
-                if capacity < item["weight"]:
+                if col < item["weight"]:
                     value_table[row][col] = prev_value
                 else:
                     current_value = value_table[row - 1][col - item["weight"]] + item["value"]
@@ -45,12 +44,19 @@ def select_items (items: list[dict], table: list[int]) -> list[dict]:
     row = len(table) - 1
     col = len(table[row]) - 1
 
-    while 0 <= row:
-        if (row == 0 and table[row][col] != 0) or table[row][col] != table[row - 1][col]:
-            selected = items[row]
-            selected_items.insert(0, selected)
-            col = col - selected["weight"]
-        row = row - 1
+    while table[row][col] != 0:
+        item = items[row]
+        current_value = table[row][col]
+        prev_value = 0 if col - item["weight"] < 0 else table[row - 1][col - item["weight"]]
+        if row == 0 and current_value != 0:
+            selected_items.insert(0, item)
+            break
+        elif current_value - item["value"] == prev_value:
+            selected_items.insert(0, item)
+            col = col - item["weight"]
+            row = row - 1
+        else:
+            row = row - 1
 
     return selected_items
 

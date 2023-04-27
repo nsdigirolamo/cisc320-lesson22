@@ -246,3 +246,21 @@ class TestSelectItems(unittest.TestCase):
             {"name": "DogFood", "weight": 10, "value": 5},
         ]
         self.assertEqual(actual_output, expected_output)
+
+    def test_two_same_weights_and_values (self):
+        items =[
+            {"name": "Pen", "weight": 2, "value": 5},
+            {"name": "Pencil", "weight": 2, "value": 5},
+            {"name": "FavoriteGame", "weight": 5, "value": 60},
+        ]
+        table = [
+            [0, 0, 5, 5, 5, 5, 5, 5, 5],
+            [0, 0, 5, 5, 10, 10, 10, 10, 10],
+            [0, 0, 5, 10, 10, 60, 60, 65, 65],
+        ]
+        actual_output = answer.select_items(items, table)
+        expected_output = [
+            {"name": "Pencil", "weight": 2, "value": 5},
+            {"name": "FavoriteGame", "weight": 5, "value": 60},
+        ]
+        self.assertEqual(actual_output, expected_output)
